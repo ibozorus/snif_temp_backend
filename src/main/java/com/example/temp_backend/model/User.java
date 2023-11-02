@@ -11,10 +11,16 @@ public class User {
     private Long id;
     private String username;
     private String password;
+    @Column(name = "isadmin")
     private boolean isAdmin;
+    @Column(name = "phonenumber")
     private String phoneNumber;
+    @Column(name = "logintries")
     private int loginTries;
+
+    @Column(name = "firstname")
     private String FirstName;
+    @Column(name = "lastname")
     private String LastName;
 
     public User() {

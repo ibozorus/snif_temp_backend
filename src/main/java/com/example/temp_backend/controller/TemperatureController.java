@@ -23,11 +23,6 @@ public class TemperatureController {
         return temperatureRepository.findBySensorId(id);
     }
 
-    @PostMapping
-    Temperature insertTemperature(@RequestBody Temperature newTemperature) {
-        return temperatureRepository.save(newTemperature);
-    }
-
     @DeleteMapping("/{id}")
     void deleteSensor(@PathVariable Long id) {
         temperatureRepository.deleteById(id);
