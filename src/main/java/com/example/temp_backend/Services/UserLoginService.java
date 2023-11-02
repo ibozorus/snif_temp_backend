@@ -36,11 +36,12 @@ public class UserLoginService {
     public User registerNewUser(User user) throws Exception {
         Iterable<User> users = userRepository.findAll();
 
-        for (User lUser:
-             users) {
+        for (User lUser :
+                users) {
             if (user.getUsername().equals(lUser.getUsername()))
-                throw  new Exception("Der Nutzername existiert bereits");
+                throw new Exception("Der Nutzername existiert bereits");
         }
+        user.setPassword(hashPassword(user.getPassword()));
         return userRepository.save(user);
     }
 
