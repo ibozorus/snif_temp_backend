@@ -1,5 +1,6 @@
 package com.example.temp_backend.controller;
 
+import com.example.temp_backend.Services.UserLoginService;
 import com.example.temp_backend.model.User;
 import com.example.temp_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    UserLoginService userService;
+
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<User> getAllUser() {
         return userRepository.findAll();
@@ -24,8 +28,8 @@ public class UserController {
     }
 
     @PostMapping
-    User insertUser(@RequestBody User newUser) {
-        return userRepository.save(newUser);
+    User insertUser(@RequestBody User newUser) throws Exception {
+        return userService.registerNewUser(newUser);
     }
 
     @PutMapping("/{id}")
