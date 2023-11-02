@@ -19,7 +19,7 @@ public class TemperatureController {
     }
 
     @GetMapping(path = "/{id}")
-    public @ResponseBody Iterable<Temperature> getTemperatureBySensorId(@PathVariable Long id) {
+    public @ResponseBody Iterable/**/<Temperature> getTemperatureBySensorId(@PathVariable Long id) {
         return temperatureRepository.findBySensorId(id);
     }
 
