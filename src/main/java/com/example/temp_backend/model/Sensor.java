@@ -27,6 +27,18 @@ public class Sensor {
         this.maxTemp = maxTemp;
     }
 
+    public Sensor(ServerCabin serverCabin) {
+        this.serverCabin = serverCabin;
+    }
+
+    public Sensor(String sensorAddress) {
+        this.sensorAddress = sensorAddress;
+    }
+
+    public Sensor(double maxTemp) {
+        this.maxTemp = maxTemp;
+    }
+
     public Sensor() {
     }
 
