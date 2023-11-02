@@ -7,8 +7,10 @@ create table changelog
     constraint id
         primary key (id),
     constraint sensorId
-        foreign key (sensorId) references sensor (id),
+        foreign key (sensorId) references sensor (id)
+            ON DELETE CASCADE,
     constraint userId
         foreign key (userId) references user (id)
+            ON DELETE CASCADE
 );
 
