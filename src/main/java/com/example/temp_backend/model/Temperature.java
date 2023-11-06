@@ -23,6 +23,10 @@ public class Temperature {
         this.timestamp = timestamp;
     }
 
+    public Temperature(double value) {
+        this.value = value;
+    }
+
     public Temperature() {
     }
 

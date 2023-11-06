@@ -22,6 +22,18 @@ public class TemperatureController {
     public @ResponseBody Iterable<Temperature> getTemperatureBySensorId(@PathVariable Long id) {
         return temperatureRepository.findBySensorId(id);
     }
+    @GetMapping(path = "/getLastTemp/{id}")
+    public @ResponseBody Iterable<Temperature> getLast10TemperatureBySensorId(@PathVariable Long id) {
+        return temperatureRepository.findLast10TempBySensorId(id);
+    }
+    @GetMapping(path = "/getMaxTemp/{id}")
+    public @ResponseBody Iterable<Temperature> getMaxTemperatureBySensorId(@PathVariable Long id) {
+        return temperatureRepository.findMaxTempBySensorId(id);
+    }
+    @GetMapping(path = "/getAvgTemp/{id}")
+    public @ResponseBody Iterable<Temperature> getAvgTemperatureBySensorId(@PathVariable Long id) {
+        return temperatureRepository.findAvgTempBySensorId(id);
+    }
 
     @DeleteMapping("/{id}")
     void deleteSensor(@PathVariable Long id) {
