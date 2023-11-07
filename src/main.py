@@ -1,4 +1,8 @@
+# Import Librarys
 from tkinter import *
+from tkinter import ttk
+
+# Import Module
 import external_funcs
 
 
@@ -10,6 +14,8 @@ login_grey_light = "#818080"
 login_grey_dark =  "#6E6E72"
 login_entrys = "#A6A6A6"
 blue_for_link = "#001AFF"
+navbar_col = "#4F4646"
+option_entrys = "#b8b9ba"
 
 root = Tk()
 root.geometry("830x500")
@@ -136,7 +142,6 @@ def open_register():
     register.place(relx=0.5, rely=0.87,anchor="center")
     register.bind("<Button-1>", lambda e: login_root())
     
-
     root.mainloop()
 
 
@@ -155,9 +160,116 @@ def register_new_user(username, password ,second_password):
     else:
         external_funcs.show_err("Die Eingaben dürfen nicht leer sein!", "Fehler")
 
+
 def main_root():
     external_funcs.del_items(root)
-    root.configure(bg=login_grey_light)
 
+    # Navigationsbar
+    navbar = Frame(root)
+    navbar.config(height="100", width="830", background=navbar_col)
+    navbar.place(relx=0.5, rely=0, anchor="center")
+
+    # Ergebnisfeld
+    results_canv = Canvas(root, bg="#dedede", height="400", width="500")
+    results_canv.place(relx=0.68, rely=0.545, anchor="center")
+
+    # Button für Logout
+    logout_button = Button(navbar, bg=option_entrys,text="Ausloggen", width="15", command=login_root)
+    logout_button.place(relx=0.92, rely=0.75, anchor="center")
+
+
+    # Benutzeroptionen
+    useroptions = Canvas(root)
+    useroptions_lb = Label(useroptions, text="Benutzeroptionen", bg=option_entrys, font=("Arial", 12))
+    useroptions_lb.place(relx=0.5, rely=0.08, anchor="center")
+    useroptions.config(height="190", width="280", bg=option_entrys)
+    useroptions.place(relx=0.2, rely=0.34, anchor="center")
+
+    # Benutzer anzeigen
+    show_user = Button(useroptions, text="Benutzer anzeigen", width="25", font=("Arial", 10), command=lambda: show_users(results_canv))
+    show_user.place(relx=0.5, rely=0.3, anchor="center")
+
+    # Benutzer anlegen
+    show_user = Button(useroptions, text="Benutzer anlegen", width="25", font=("Arial", 10), command=lambda: add_user(results_canv))
+    show_user.place(relx=0.5, rely=0.48, anchor="center")
+
+    # Benuter bearbeiten
+    show_user = Button(useroptions, text="Benutzer bearbeiten", width="25", font=("Arial", 10))
+    show_user.place(relx=0.5, rely=0.66, anchor="center")
+
+    # Benuter löschen
+    show_user = Button(useroptions, text="Benutzer löschen", width="25", font=("Arial", 10))
+    show_user.place(relx=0.5, rely=0.85, anchor="center")
+
+
+    # Tabellenoptionen
+    tableoptions = Canvas(root)
+    tableoptions_lb = Label(tableoptions, text="Tabellenoptionen", bg=option_entrys, font=("Arial", 12))
+    tableoptions_lb.place(relx=0.5, rely=0.08, anchor="center")
+    tableoptions.config(height="190", width="280", bg=option_entrys)
+    tableoptions.place(relx=0.2, rely=0.75, anchor="center")
+
+    # Log-Tabelle anzeigen
+    show_user = Button(tableoptions, text="Log-Tabelle anzeigen", width="25", font=("Arial", 10))
+    show_user.place(relx=0.5, rely=0.3, anchor="center")
+
+    # Temperaturdaten löschen   
+    show_user = Button(tableoptions, text="Temperaturdaten löschen", width="25", font=("Arial", 10))
+    show_user.place(relx=0.5, rely=0.48, anchor="center")
+
+    # Sensordaten bearbeiten
+    show_user = Button(tableoptions, text="Sensordaten bearbeiten", width="25", font=("Arial", 10))
+    show_user.place(relx=0.5, rely=0.66, anchor="center")
+
+    # Sensordaten löschen
+    show_user = Button(tableoptions, text="Sensordaten löschen", width="25", font=("Arial", 10))
+    show_user.place(relx=0.5, rely=0.85, anchor="center")
+
+    root.configure(bg="white")
+
+
+def add_user(canv):
+    external_funcs.del_items(canv)
+
+    name_lb = Label(canv, text="Namen eingeben", bg="#dedede")
+    name_lb.place(relx=0.5, rely=0.045, anchor="center")
+
+    name_entr = Entry(canv, bg=login_entrys, width="50")
+    name_entr.place(relx=0.5, rely=0.089, anchor="center")
+
+
+    name_lb = Label(canv, text="Namen eingeben", bg="#dedede")
+    name_lb.place(relx=0.5, rely=0.045, anchor="center")
+
+    name_entr = Entry(canv, bg=login_entrys, width="50")
+    name_entr.place(relx=0.5, rely=0.089, anchor="center")
+
+
+def show_users(canv):
+    external_funcs.del_items(canv)
+    # Alle Einträge aus SQL Befehl
     
-login_root()
+    # Column Namen der Datenbank
+    col_names = ["Hello", "World", "Hello", "fgf"]
+    # col_names = [i[0] for i in col_names]
+
+
+    # Treeview Widget, zum anzeigen der Datenbankergebnisse
+    trv = ttk.Treeview(canv, selectmode="browse", columns=col_names, show="headings", height=19)
+    trv.place(relx=0.5, rely=0.5,anchor="center")
+
+    # Richtige Überschrift jeder Zeile
+    for i in col_names:
+        trv.column(i, anchor="c", width=200, stretch=False)
+        trv.heading(i, text=i)
+    
+    vsb = Scrollbar(canv, orient="vertical", command=trv.yview)
+    vsb.place(relx=0.9, rely=0.175, relheight=0.7)
+
+    hsb = Scrollbar(canv, orient="horizontal", command=trv.xview)
+    hsb.place(relx=0.01 , rely=0.94, relwidth=0.9)
+
+    trv.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+
+
+login_root() 
