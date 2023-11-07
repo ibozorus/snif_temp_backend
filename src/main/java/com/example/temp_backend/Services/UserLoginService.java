@@ -16,9 +16,8 @@ public class UserLoginService {
     @Autowired
     private UserRepository userRepository;
 
-    public HashMap<String, String> checkLogin(long id, String password) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("User does not exist"));
+    public HashMap<String, String> checkLogin(String userName, String password) {
+        User user = userRepository.findUserByUsername(userName);
 
         HashMap<String, String> response = new HashMap<>();
 

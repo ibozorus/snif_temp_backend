@@ -6,6 +6,7 @@ import com.example.temp_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 @RestController
@@ -22,9 +23,15 @@ public class UserController {
     public @ResponseBody Iterable<User> getAllUser() {
         return userRepository.findAll();
     }
+
     @GetMapping(path = "/{id}")
     public @ResponseBody Optional<User> getUserById(@PathVariable Long id) {
         return userRepository.findById(id);
+    }
+
+    @GetMapping(path = "/check-login")
+    public @ResponseBody HashMap<String, String> checkLogin(@RequestBody User user) {
+        return userService.checkLogin(user.getUsername(), user.getPassword());
     }
 
     @PostMapping
