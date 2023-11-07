@@ -1,9 +1,15 @@
 # Import Librarys
 from tkinter import *
 from tkinter import ttk
+import json
+import requests
+import re
 
 # Import Module
 import external_funcs
+
+
+url = "http://localhost:8080"
 
 
 blue_col = "#2280A9"
@@ -80,6 +86,7 @@ def login_root():
 
     root.mainloop()
 
+
 def open_register():
     external_funcs.del_items(root)
     root.configure(bg=login_grey_light)
@@ -146,8 +153,24 @@ def open_register():
 
 
 def validate_login(username, password):
-    main_root()
-    return None
+    payload = json.dumps({
+    "username": f"{username}",
+    "password": f"{password}"
+    })
+    headers = {
+    'Content-Type': 'application/json'
+    }
+
+    response = requests.request("GET", f"{url}/user/check-login", headers=headers, data=payload)
+
+    res = response.json()
+    val_msg = res['message']
+
+    if val_msg == "success":
+        main_root()
+    else:
+        external_funcs.show_err("Die eingegebene Kombination aus Nutzername und Passwort war leider nicht korrekt.", "Fehler")
+    
 
 
 def register_new_user(username, password ,second_password):
