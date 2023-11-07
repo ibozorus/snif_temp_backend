@@ -29,7 +29,7 @@ public class UserController {
         return userRepository.findById(id);
     }
 
-    @GetMapping(path = "/check-login")
+    @PostMapping(path = "/check-login")
     public @ResponseBody HashMap<String, String> checkLogin(@RequestBody User user) {
         return userService.checkLogin(user.getUsername(), user.getPassword());
     }
