@@ -1,24 +1,34 @@
 $(document).ready(function () {
-    var settings = {
-        "url": "localhost:8080/user/check-login",
-        "method": "GET",
-        "timeout": 0,
-        "headers": {
-            "Content-Type": "application/json"
-        },
-        "data": JSON.stringify({
-            "username": "scott31",
-            "password": "12345"
-        }),
-    };
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
 
-    $.ajax(settings).done(function (response) {
-        console.log(response);
-    });
+
     $("#login-button").on("click", function () {
+
+        let requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
         let username = $("#username").val();
         let password = $("#password").val();
+        let data = {
+            username: username,
+            password: password
+        }
+        requestOptions["body"] = JSON.stringify(data);
 
+        fetch("http://localhost:8080/user/check-login", requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                if (result.message === "success") {
+                    window.location.replace("interface.html");
+                } else {
+                    alert("Beim Login ist ein Fehler aufgetreten!")
+                }
+
+            })
+            .catch(error => console.log('error', error));
     })
 
 })
