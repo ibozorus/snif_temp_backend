@@ -21,10 +21,12 @@ $(document).ready(function () {
         fetch("http://localhost:8080/user/check-login", requestOptions)
             .then(response => response.text())
             .then(result => {
-                if (result.message === "success") {
+                let resultJSON = JSON.parse(result);
+                console.log(resultJSON)
+                if (resultJSON.message === "success") {
                     window.location.replace("interface.html");
                 } else {
-                    alert("Beim Login ist ein Fehler aufgetreten!")
+                    alert("Fehler beim Einloggen!")
                 }
 
             })
