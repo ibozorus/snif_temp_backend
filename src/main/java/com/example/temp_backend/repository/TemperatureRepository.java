@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 public interface TemperatureRepository extends CrudRepository<Temperature, Long> {
-    @Query("SELECT a FROM Temperature a WHERE a.sensor.id = ?1")
+    @Query("SELECT a FROM Temperature a WHERE a.sensor.id = ?1 ORDER BY a.timestamp ASC")
     Iterable<Temperature> findBySensorId(Long id);
     @Query("SELECT a.value FROM Temperature a WHERE a.sensor.id = ?1 ORDER BY a.timestamp DESC LIMIT 10")
     Iterable<Temperature> findLast10TempBySensorId(Long id);

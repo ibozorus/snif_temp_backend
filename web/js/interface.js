@@ -35,7 +35,6 @@ $(document).ready(function () {
         fetch("http://localhost:8080/temperature/getLastTemp/" + sensorId, requestOptionsLast10)
             .then(response => {
                 response.json().then(result => {
-                    console.log(result);
                     for (let i = 0; i < result.length; i++) {
                         let tempValue = result[i];
                         $("#lastEntries").append(`<li> 
@@ -54,7 +53,6 @@ $(document).ready(function () {
         $("#maxMessuredTemp").val("");
         $("#maxTemp").val("");
         let value = $('#sensor-select').val();
-        console.log(value);
         let sensorId = value.split('-')[1];
         var requestOptionsAvg = {
             method: 'GET',
@@ -73,12 +71,59 @@ $(document).ready(function () {
             .then(response => {
                 response.json().then(result => {
                     let maxtemp = result[0].value;
-                    console.log(result[0])
                     $("#maxMessuredTemp").val(maxtemp);
                     let festgelegteMax = result[0].sensor.maxTemp
                     $("#maxTemp").val(festgelegteMax);
                 })
             })
             .catch(error => console.log('error', error));
+        loadChart();
+    }
+
+
+    function loadChart() {
+        console.log("chart is initialized!");
+        const xValues = [];
+        const    yValues = [];
+        let requestOptionsCharts = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+        let value = $('#sensor-select').val();
+        let sensorId = value.split('-')[1];
+        fetch("http://localhost:8080/temperature/" + sensorId, requestOptionsCharts)
+            .then(response => {
+                response.json().then(result => {
+                    for (let i = 0; i < result.length; i++) {
+                        let date = new Date(result[i].timestamp);
+                        xValues.push(date.toISOString().split("T")[0]);
+                        yValues.push(result[i].value);
+                    }
+                })
+            })
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+        console.log(xValues)
+        console.log(yValues)
+        new Chart("myChart", {
+            type: "line",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    fill: true,
+                    lineTension: 0,
+                    backgroundColor: "rgba(0,0,255,1.0)",
+                    borderColor: "rgba(0,0,255,0.1)",
+                    data: yValues
+                }]
+            },
+            options: {
+                legend: {display: false},
+                scales: {
+                    yAxes: [{ticks: {min: 0.00, max: 100.00}}],
+                }
+            }
+        });
     }
 })
